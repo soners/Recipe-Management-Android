@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "713564167342",
+    "firebase_url": "https://ccrescendo-ff945.firebaseio.com",
+    "project_id": "ccrescendo-ff945",
+    "storage_bucket": "ccrescendo-ff945.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713564167342:android:8bb880162bf77428",
+        "android_client_info": {
+          "package_name": "com.etu.recipemanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713564167342-br0aip02fv8dai3nrg16soeuc9lffidk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQWxEEkOJi3hTCOsMQeExAmO1n85Yyj80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713564167342-br0aip02fv8dai3nrg16soeuc9lffidk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
