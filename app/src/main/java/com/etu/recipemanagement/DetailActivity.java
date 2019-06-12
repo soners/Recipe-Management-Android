@@ -30,22 +30,32 @@ public class DetailActivity extends AppCompatActivity {
 
     private LinearLayout ingredients;
     private LinearLayout details;
+    private LinearLayout cookingSteps;
     private ArrayList<String> ingredientsNames;
     private EditText ingredientName;
     private IngredientAdapter ingredientAdapter;
     private ListView ingredientsListView;
     private Bitmap selectedPhoto;
     private List<Bitmap> selectedPhotosList;
+    private ArrayList<String> cookingStepList;
+    private EditText cookingStepName;
+    private CookingStepsAdapter cookingStepsAdapter;
+    private ListView cookingStepsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ingredientName = findViewById(R.id.ingredientNameInput);
+        cookingSteps = findViewById(R.id.cooking_steps);
         ingredientsNames = new ArrayList<>();
         ingredientAdapter = new IngredientAdapter(this, ingredientsNames);
         ingredientsListView = findViewById(R.id.ingredientsListView);
         selectedPhotosList = new ArrayList<>();
+        cookingStepName = findViewById(R.id.cookingStepsNameInput);
+        cookingStepList = new ArrayList<>();
+        cookingStepsAdapter = new CookingStepsAdapter(this, cookingStepList);
+        cookingStepsListView = findViewById(R.id.cookingStepsListView);
         init();
     }
 
@@ -83,6 +93,24 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        Button addCookingSteps = findViewById(R.id.addCookingSteps);
+        addCookingSteps.setOnClickListener((v) -> {
+            cookingSteps.setVisibility(View.VISIBLE);
+            details.setVisibility(View.GONE);
+        });
+
+        Button cookingStepsBack = findViewById(R.id.cooking_steps_back);
+        cookingStepsBack.setOnClickListener((v) -> {
+            cookingSteps.setVisibility(View.GONE);
+            details.setVisibility(View.VISIBLE);
+        });
+
+        Button addCookingStepButton = findViewById(R.id.add_cooking_step);
+        addCookingStepButton.setOnClickListener((v) -> {
+            cookingStepList.add(cookingStepName.getText().toString());
+            cookingStepsAdapter = new CookingStepsAdapter(this,cookingStepList);
+            cookingStepsListView.setAdapter(cookingStepsAdapter);
+        });
     }
 
     @Override

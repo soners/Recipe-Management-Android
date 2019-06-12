@@ -54,6 +54,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="ADD INGREDIENT PHOTOS"/>
+                <Button
+                    android:id="@+id/addCookingSteps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ADD COOKING STEPS"/>
             </LinearLayout>
 
 
@@ -105,8 +110,6 @@
                             android:text="ADD" />
                     </LinearLayout>
 
-
-
                 </LinearLayout>
                 <ListView
                     android:id="@+id/ingredientsListView"
@@ -115,6 +118,62 @@
                     android:layout_marginEnd="8dp"
                     />
             </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/cooking_steps"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/cooking_steps_back"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="BACK" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:text="Cooking Steps" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/cookingStepsNameInput"
+                            android:layout_width="205dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <Button
+                            android:id="@+id/add_cooking_step"
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="ADD" />
+                    </LinearLayout>
+
+                </LinearLayout>
+                <ListView
+                    android:id="@+id/cookingStepsListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    />
+            </LinearLayout>
+
         </LinearLayout>
 
 
