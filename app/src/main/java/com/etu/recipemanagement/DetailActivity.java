@@ -127,6 +127,16 @@ public class DetailActivity extends AppCompatActivity {
                 startActivityForResult(toGallery,4);
             }
         });
+
+        Button addFinalPhotos = findViewById(R.id.addFinalPhoto);
+        addFinalPhotos.setOnClickListener((v) -> {
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String [] {Manifest.permission.READ_EXTERNAL_STORAGE},5);
+            } else {
+                Intent toGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(toGallery,6);
+            }
+        });
     }
 
     @Override
@@ -140,6 +150,9 @@ public class DetailActivity extends AppCompatActivity {
         } else if(requestCode == 3) {
             Intent toGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(toGallery,4);
+        } else if(requestCode == 5) {
+            Intent toGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(toGallery,6);
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
@@ -163,6 +176,16 @@ public class DetailActivity extends AppCompatActivity {
                 selectedPhoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
                 pic.setImageBitmap(selectedPhoto);
                 selectedCookingStepsPhotosList.add(selectedPhoto);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else if(requestCode == 6 && resultCode == RESULT_OK && data != null) {
+            Uri image = data.getData();
+            try {
+                selectedPhoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
+                pic.setImageBitmap(selectedPhoto);
+                selectedFinalPhotosList.add(selectedPhoto);
             } catch (IOException e) {
                 e.printStackTrace();
             }
