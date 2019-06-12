@@ -41,15 +41,22 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textMultiLine" />
+
+                <Button
+                    android:id="@+id/add_ingredient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="INGREDIENTS" />
+
+                <Button
+                    android:id="@+id/addIngredientPhotos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ADD INGREDIENT PHOTOS"/>
             </LinearLayout>
 
-            <Button
-                android:id="@+id/add_ingredient"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="addIngredientToList"
-                android:text="INGREDIENTS" />
+
 
 
             <LinearLayout
@@ -57,7 +64,7 @@
                 android:id="@+id/ingredient"
                 android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -91,12 +98,14 @@
                             android:layout_weight="1" />
 
                         <Button
+                            android:id="@+id/add_ingredient_list"
                             android:layout_width="30dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:onClick="addIngredientsToList"
                             android:text="ADD" />
                     </LinearLayout>
+
+
 
                 </LinearLayout>
                 <ListView
