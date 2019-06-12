@@ -59,6 +59,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="ADD COOKING STEPS"/>
+
+                <Button
+                    android:id="@+id/addCookingStepsPhotos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ADD COOKING STEPS PHOTO"/>
+
+                <Button
+                    android:id="@+id/addFinalPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ADD FINAL PHOTOS"/>
+
+                <ImageView
+                    android:id="@+id/image1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
 
