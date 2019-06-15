@@ -8,4 +8,41 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <LinearLayout
+
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#002a40">
+
+            <ImageView
+                android:id="@+id/help_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_menu_send" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10sp"
+                android:paddingLeft="10sp"
+                android:paddingEnd="10sp"
+                android:paddingRight="10sp"
+                android:text="My Recipes"
+                android:textColor="#fff"
+                android:textSize="22sp" />
+        </android.support.v7.widget.Toolbar>
+
+        <Button
+            android:id="@+id/add_recipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add recipe" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
