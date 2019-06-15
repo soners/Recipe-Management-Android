@@ -41,7 +41,19 @@
             android:id="@+id/add_recipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add recipe" />
+            android:text="Add recipee" />
+
+
+        <ListView
+            android:id="@+id/recipeList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="10dp"
+            />
+
+
+
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
