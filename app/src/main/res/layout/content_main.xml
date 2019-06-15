@@ -20,7 +20,7 @@
             android:background="#002a40">
 
             <ImageView
-                android:id="@+id/help_back"
+                android:id="@+id/add_recipe_back"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_menu_send" />
@@ -41,7 +41,81 @@
             android:id="@+id/add_recipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add recipe" />
+            android:text="Add new recipe"
+            android:paddingLeft="10sp"
+            android:paddingStart="10sp"
+            android:paddingRight="10sp"
+            android:paddingEnd="10sp"
+            android:paddingTop="5sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/add_recipe_action"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#002a40">
+
+            <ImageView
+                android:id="@+id/add_recipe_action_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_menu_send" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10sp"
+                android:paddingLeft="10sp"
+                android:paddingEnd="10sp"
+                android:paddingRight="10sp"
+                android:text="Add new recipe"
+                android:textColor="#fff"
+                android:textSize="22sp" />
+        </android.support.v7.widget.Toolbar>
+
+        <EditText
+            android:id="@+id/new_recipe_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10sp"
+            android:paddingStart="10sp"
+            android:paddingRight="10sp"
+            android:paddingEnd="10sp"
+            android:paddingTop="5sp"
+            android:hint="Name"
+            android:textSize="18sp"
+            android:backgroundTint="#dcdcdc" />
+
+        <EditText
+            android:id="@+id/new_recipe_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10sp"
+            android:paddingStart="10sp"
+            android:paddingRight="10sp"
+            android:paddingEnd="10sp"
+            android:paddingTop="5sp"
+            android:hint="Details"
+            android:textSize="16sp"
+            android:backgroundTint="#dcdcdc"/>
+
+        <Button
+            android:id="@+id/push_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ADD"
+            android:paddingLeft="10sp"
+            android:paddingStart="10sp"
+            android:paddingRight="10sp"
+            android:paddingEnd="10sp"
+            android:paddingTop="5sp"
+            android:textSize="16sp"/>
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

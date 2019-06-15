@@ -15,12 +15,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private LinearLayout last;
+    private Button add_recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,38 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        addRecipe();
+
+
+
+    }
+
+    private void addRecipe() {
+        add_recipe = findViewById(R.id.add_recipe);
+        add_recipe.setOnClickListener(v -> {
+            if(last != null) last.setVisibility(View.GONE);
+            LinearLayout add_recipe_action = findViewById(R.id.add_recipe_action);
+            add_recipe_action.setVisibility(View.VISIBLE);
+            last = add_recipe_action;
+        });
+
+        EditText new_recipe_name = findViewById(R.id.new_recipe_name);
+        EditText new_recipe_details = findViewById(R.id.new_recipe_details);
+        Button push_recipe = findViewById(R.id.push_recipe);
+
+        push_recipe.setOnClickListener(task -> {
+            String name = new_recipe_name.getText().toString();
+            String details = new_recipe_details.getText().toString();
+
+            if(name != null && details != null) {
+
+            } else {
+                new_recipe_name.setError("Please insert a name");
+                new_recipe_details.setError("Please give details of the recipe");
+            }
+        });
+
     }
 
     @Override
@@ -105,4 +141,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
