@@ -2,10 +2,12 @@ package com.etu.recipemanagement;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,6 +24,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -118,13 +128,65 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loadRecipes() {
-        ListView view = findViewById(R.id.recipeList);
+        final ListView view = findViewById(R.id.recipeList);
 
-        //ListView listView = getApplicationContext().findViewById(R.id.listView);
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void,Void, Void>() {
 
-        RecipeTask task = new RecipeTask(view,getApplicationContext());
+            @Override
+            protected Void doInBackground(Void... voids) {
 
+                ArrayList<Recipe> recipes = new ArrayList<>();
+
+
+                try {
+                    HttpURLConnection con;
+                    URL url = new URL("http://35.184.224.87:8000/api_recipes/5/");
+                    con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("GET");
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                    StringBuilder content = new StringBuilder();
+                    String line;
+                    while (null != (line = br.readLine())) {
+                        content.append(line);
+                    }
+
+
+                    JSONObject json = new JSONObject(content.toString());
+
+                    JSONArray array = json.getJSONArray("recipes");
+
+
+                    for(int i=0; i<array.length(); i++) {
+
+                        JSONObject jsonobject = (JSONObject) array.get(i);
+                        String name = jsonobject.getString("name");
+                        int id = (int) jsonobject.get("id");
+                        String detail = jsonobject.getString("details");
+
+                        //System.out.println("id:" + id +  " name: " + name + " detail: " + detail);
+
+                        Recipe rec = new Recipe();
+                        rec.setId(id);
+                        rec.setDesc(detail);
+                        rec.setName(name);
+
+                        recipes.add(rec);
+                    }
+
+
+                    Log.d("TAG", ((JSONObject)array.get(0)).getString("name"));
+
+                    RecipeAdapter adapter = new RecipeAdapter(getApplicationContext(), recipes);
+                    runOnUiThread(() -> view.setAdapter(adapter));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
         task.execute();
-
     }
 }
