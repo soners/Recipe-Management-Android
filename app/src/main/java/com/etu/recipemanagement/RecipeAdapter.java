@@ -23,6 +23,10 @@ public class RecipeAdapter extends BaseAdapter {
         recipes = recipe;
     }
 
+    public RecipeAdapter() {
+
+    }
+
     @Override
     public int getCount() {
         return recipes.size();

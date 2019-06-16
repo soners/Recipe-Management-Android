@@ -1,5 +1,7 @@
 package com.etu.recipemanagement;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,7 +22,22 @@ import static android.widget.Toast.makeText;
 
 public class RecipeTask extends AsyncTask<Void, Void, Void> {
 
+
+    private ListView listview;
+    private Context mContext;
+
     public RecipeTask(ListView view) {
+
+        listview = view;
+    }
+
+    public RecipeTask (Context context) {
+        mContext = context;
+    }
+    public RecipeTask(ListView view, Context context) {
+
+        listview = view;
+        mContext = context;
 
     }
 
@@ -77,12 +94,13 @@ public class RecipeTask extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
         }
 
-
         RecipeAdapter adapter = new RecipeAdapter(recipes);
 
-
-
+        listview.setAdapter(adapter);
 
         return null;
     }
+
+
+
 }
