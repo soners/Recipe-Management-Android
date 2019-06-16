@@ -1,7 +1,6 @@
 package com.etu.recipemanagement;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,11 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -78,44 +72,12 @@ public class MainActivity extends AppCompatActivity
             String details = new_recipe_details.getText().toString();
 
             if(name != null && details != null) {
-                AsyncTask<Void, Void, Void> art = new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        try {
-                            String link = "http://35.184.224.87:8000/api_add_recipe/?user_id=" + Data.user.getId() +"&name=" + name + "&details="
-                                    + details;
-                            URL url = new URL(link.replace(" ","%20"));
-                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                            urlConnection.setRequestMethod("GET");
 
-                            BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
-                            StringBuilder content = new StringBuilder();
-                            String line;
-                            while (null != (line = br.readLine())) {
-                                content.append(line);
-                            }
-                            runOnUiThread(() -> {
-                                LinearLayout recipe_layout = findViewById(R.id.recipe_layout);
-                                LinearLayout add_recipe_layout = findViewById(R.id.add_recipe_action);
-                                recipe_layout.setVisibility(View.VISIBLE);
-                                add_recipe_layout.setVisibility(View.GONE);
-                            });
-
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
-                };
-                art.execute();
             } else {
                 new_recipe_name.setError("Please insert a name");
                 new_recipe_details.setError("Please give details of the recipe");
             }
         });
-
 
     }
 

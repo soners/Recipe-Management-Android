@@ -9,7 +9,6 @@
     tools:showIn="@layout/app_bar_main">
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/recipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,7 +50,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/add_recipe_action"
         android:orientation="vertical"
         android:layout_width="match_parent"
