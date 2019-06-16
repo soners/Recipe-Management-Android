@@ -1,11 +1,13 @@
 package com.etu.recipemanagement;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,6 +18,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,6 +36,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Recipe Management");
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +67,8 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        loadRecipes();
         addRecipe();
 
 
@@ -64,6 +79,9 @@ public class MainActivity extends AppCompatActivity
         add_recipe = findViewById(R.id.add_recipe);
         add_recipe.setOnClickListener(v -> {
             if(last != null) last.setVisibility(View.GONE);
+            LinearLayout rl = findViewById(R.id.recipe_layout);
+
+            rl.setVisibility(View.GONE);
             LinearLayout add_recipe_action = findViewById(R.id.add_recipe_action);
             add_recipe_action.setVisibility(View.VISIBLE);
             last = add_recipe_action;
@@ -100,7 +118,10 @@ public class MainActivity extends AppCompatActivity
                                 LinearLayout add_recipe_layout = findViewById(R.id.add_recipe_action);
                                 recipe_layout.setVisibility(View.VISIBLE);
                                 add_recipe_layout.setVisibility(View.GONE);
+                                loadRecipes();
                             });
+
+
 
 
                         } catch (Exception e) {
@@ -180,4 +201,65 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void loadRecipes() {
+        final ListView view = findViewById(R.id.recipeList);
+
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void,Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                ArrayList<Recipe> recipes = new ArrayList<>();
+
+
+                try {
+                    HttpURLConnection con;
+                    URL url = new URL("http://35.184.224.87:8000/api_recipes/" + Data.user.getId());
+                    con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("GET");
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                    StringBuilder content = new StringBuilder();
+                    String line;
+                    while (null != (line = br.readLine())) {
+                        content.append(line);
+                    }
+
+
+                    JSONObject json = new JSONObject(content.toString());
+
+                    JSONArray array = json.getJSONArray("recipes");
+
+
+                    for(int i=0; i<array.length(); i++) {
+
+                        JSONObject jsonobject = (JSONObject) array.get(i);
+                        String name = jsonobject.getString("name");
+                        int id = (int) jsonobject.get("id");
+                        String detail = jsonobject.getString("details");
+
+                        //System.out.println("id:" + id +  " name: " + name + " detail: " + detail);
+
+                        Recipe rec = new Recipe();
+                        rec.setId(id);
+                        rec.setDesc(detail);
+                        rec.setName(name);
+
+                        recipes.add(rec);
+                    }
+
+
+
+                    RecipeAdapter adapter = new RecipeAdapter(getApplicationContext(), recipes);
+                    runOnUiThread(() -> view.setAdapter(adapter));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+        task.execute();
+    }
 }
