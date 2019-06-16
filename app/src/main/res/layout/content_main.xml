@@ -40,14 +40,18 @@
 
         <Button
             android:id="@+id/add_recipe"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add new recipe"
-            android:paddingLeft="10sp"
-            android:paddingStart="10sp"
-            android:paddingRight="10sp"
-            android:paddingEnd="10sp"
-            android:paddingTop="5sp" />
+            android:text="Add recipe" />
+
+
+        <ListView
+            android:id="@+id/recipeList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="10dp"
+            />
+
     </LinearLayout>
 
     <LinearLayout
