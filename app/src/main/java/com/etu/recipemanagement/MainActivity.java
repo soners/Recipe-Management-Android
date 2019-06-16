@@ -27,23 +27,29 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private LinearLayout last;
+    private Button add_recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Recipe Management");
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +69,74 @@ public class MainActivity extends AppCompatActivity
 
 
         loadRecipes();
+        addRecipe();
+
+
+
+    }
+
+    private void addRecipe() {
+        add_recipe = findViewById(R.id.add_recipe);
+        add_recipe.setOnClickListener(v -> {
+            if(last != null) last.setVisibility(View.GONE);
+            LinearLayout rl = findViewById(R.id.recipe_layout);
+
+            rl.setVisibility(View.GONE);
+            LinearLayout add_recipe_action = findViewById(R.id.add_recipe_action);
+            add_recipe_action.setVisibility(View.VISIBLE);
+            last = add_recipe_action;
+        });
+
+        EditText new_recipe_name = findViewById(R.id.new_recipe_name);
+        EditText new_recipe_details = findViewById(R.id.new_recipe_details);
+        Button push_recipe = findViewById(R.id.push_recipe);
+
+        push_recipe.setOnClickListener(task -> {
+            String name = new_recipe_name.getText().toString();
+            String details = new_recipe_details.getText().toString();
+
+            if(name != null && details != null) {
+                AsyncTask<Void, Void, Void> art = new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        try {
+                            String link = "http://35.184.224.87:8000/api_add_recipe/?user_id=" + Data.user.getId() +"&name=" + name + "&details="
+                                    + details;
+                            URL url = new URL(link.replace(" ","%20"));
+                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                            urlConnection.setRequestMethod("GET");
+
+                            BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+
+                            StringBuilder content = new StringBuilder();
+                            String line;
+                            while (null != (line = br.readLine())) {
+                                content.append(line);
+                            }
+                            runOnUiThread(() -> {
+                                LinearLayout recipe_layout = findViewById(R.id.recipe_layout);
+                                LinearLayout add_recipe_layout = findViewById(R.id.add_recipe_action);
+                                recipe_layout.setVisibility(View.VISIBLE);
+                                add_recipe_layout.setVisibility(View.GONE);
+                                loadRecipes();
+                            });
+
+
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                };
+                art.execute();
+            } else {
+                new_recipe_name.setError("Please insert a name");
+                new_recipe_details.setError("Please give details of the recipe");
+            }
+        });
+
 
     }
 
@@ -140,7 +214,7 @@ public class MainActivity extends AppCompatActivity
 
                 try {
                     HttpURLConnection con;
-                    URL url = new URL("http://35.184.224.87:8000/api_recipes/5/");
+                    URL url = new URL("http://35.184.224.87:8000/api_recipes/" + Data.user.getId());
                     con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
 
@@ -176,7 +250,6 @@ public class MainActivity extends AppCompatActivity
                     }
 
 
-                    Log.d("TAG", ((JSONObject)array.get(0)).getString("name"));
 
                     RecipeAdapter adapter = new RecipeAdapter(getApplicationContext(), recipes);
                     runOnUiThread(() -> view.setAdapter(adapter));

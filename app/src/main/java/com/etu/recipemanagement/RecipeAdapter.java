@@ -1,6 +1,7 @@
 package com.etu.recipemanagement;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,13 @@ public class RecipeAdapter extends BaseAdapter {
         textViewItemDetails.setText(currentItem.getDesc());
 
         // returns the view for the current row
+
+        convertView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, RecipeActivity.class);
+            intent.putExtra("id",currentItem.getId());
+            context.startActivity(intent);
+        });
+
         return convertView;
     }
 }
