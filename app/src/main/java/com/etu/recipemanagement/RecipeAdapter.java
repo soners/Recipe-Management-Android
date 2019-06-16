@@ -77,6 +77,7 @@ public class RecipeAdapter extends BaseAdapter {
             Intent intent = new Intent(context, RecipeActivity.class);
             intent.putExtra("id",currentItem.getId());
             context.startActivity(intent);
+
         });
 
         return convertView;
