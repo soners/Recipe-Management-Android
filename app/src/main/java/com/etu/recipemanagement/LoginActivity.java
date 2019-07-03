@@ -23,6 +23,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.etu.recipemanagement.Data.IP;
+
 public class LoginActivity extends AppCompatActivity {
 
     private String name, email, pass;
@@ -53,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                     protected Void doInBackground(Void... voids) {
                         try {
                             HttpURLConnection con;
-                            URL url = new URL("http://35.184.224.87:8000/api_login/?email=" +
+                            URL url = new URL(IP + "/api_login/?email=" +
                                     email + "&password=" + pass);
                             con = (HttpURLConnection) url.openConnection();
                             con.setRequestMethod("GET");
@@ -135,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
             protected Void doInBackground(Void... voids) {
                 try {
                     HttpURLConnection con;
-                    URL url = new URL("http://35.184.224.87:8000/api_signup/?name=" +
+                    URL url = new URL(IP + "/api_signup/?name=" +
                             r_name + "&email=" + r_email + "&password=" + r_pass);
                     con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
