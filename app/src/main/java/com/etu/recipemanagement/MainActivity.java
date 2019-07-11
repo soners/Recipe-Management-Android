@@ -38,6 +38,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.etu.recipemanagement.Data.IP;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     protected Void doInBackground(Void... voids) {
                         try {
-                            String link = "http://35.184.224.87:8000/api_add_recipe/?user_id=" + Data.user.getId() +"&name=" + name + "&details="
+                            String link = IP + "/api_add_recipe/?user_id=" + Data.user.getId() +"&name=" + name + "&details="
                                     + details;
                             URL url = new URL(link.replace(" ","%20"));
                             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -214,7 +216,7 @@ public class MainActivity extends AppCompatActivity
 
                 try {
                     HttpURLConnection con;
-                    URL url = new URL("http://35.184.224.87:8000/api_recipes/" + Data.user.getId());
+                    URL url = new URL(IP + "/api_recipes/" + Data.user.getId());
                     con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
 
