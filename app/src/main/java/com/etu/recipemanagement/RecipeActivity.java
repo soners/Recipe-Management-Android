@@ -18,6 +18,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.etu.recipemanagement.Data.IP;
+
 public class RecipeActivity extends AppCompatActivity {
 
     @Override
@@ -29,10 +31,13 @@ public class RecipeActivity extends AppCompatActivity {
         Button button = findViewById(R.id.back);
         button.setOnClickListener(v -> finish());
 
+        Button share = findViewById(R.id.share);
+        share.setOnClickListener(v -> shareRecipe(id));
 
-        Log.d("tag: ", id + "");
+        loadRecipe(id);
+    }
 
-
+    private void loadRecipe(int id) {
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void,Void, Void>() {
 
             @Override
@@ -41,7 +46,7 @@ public class RecipeActivity extends AppCompatActivity {
 
                 try {
                     HttpURLConnection con;
-                    URL url = new URL("http://35.184.224.87:8000/api_recipe/" + id);
+                    URL url = new URL(IP + "/api_recipe/" + id);
 
                     con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
@@ -92,11 +97,7 @@ public class RecipeActivity extends AppCompatActivity {
             }
         };
 
-
-
         task.execute();
-
-
     }
 
     private void deleteRecipe(int id) {
@@ -108,7 +109,7 @@ public class RecipeActivity extends AppCompatActivity {
 
                 try {
                     HttpURLConnection con;
-                    URL url = new URL("http://35.184.224.87:8000/api_delete_recipe/" + id);
+                    URL url = new URL(IP + "/api_delete_recipe/" + id);
                     con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
 
@@ -140,6 +141,14 @@ public class RecipeActivity extends AppCompatActivity {
 
         deleteTask.execute();
 
+    }
+
+    private void shareRecipe(int id) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, IP + "/detail/" + id);
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, "Send Recipe"));
     }
 
 
