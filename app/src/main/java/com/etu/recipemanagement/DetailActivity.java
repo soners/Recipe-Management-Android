@@ -61,7 +61,7 @@ public class DetailActivity extends AppCompatActivity {
         cookingStepList = new ArrayList<>();
         cookingStepsAdapter = new CookingStepsAdapter(this, cookingStepList);
         cookingStepsListView = findViewById(R.id.cookingStepsListView);
-        pic = findViewById(R.id.image1);
+        pic = findViewById(R.id.image);
         init();
     }
 
