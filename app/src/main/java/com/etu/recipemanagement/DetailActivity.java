@@ -43,7 +43,6 @@ public class DetailActivity extends AppCompatActivity {
     private EditText cookingStepName;
     private CookingStepsAdapter cookingStepsAdapter;
     private ListView cookingStepsListView;
-    private ImageView pic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +60,7 @@ public class DetailActivity extends AppCompatActivity {
         cookingStepList = new ArrayList<>();
         cookingStepsAdapter = new CookingStepsAdapter(this, cookingStepList);
         cookingStepsListView = findViewById(R.id.cookingStepsListView);
-        pic = findViewById(R.id.image1);
+
         init();
     }
 
@@ -137,6 +136,11 @@ public class DetailActivity extends AppCompatActivity {
                 startActivityForResult(toGallery,6);
             }
         });
+
+        Button saveButton = findViewById(R.id.save);
+        saveButton.setOnClickListener((v) -> {
+
+        });
     }
 
     @Override
@@ -164,7 +168,6 @@ public class DetailActivity extends AppCompatActivity {
             Uri image = data.getData();
             try {
                 selectedPhoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
-                pic.setImageBitmap(selectedPhoto);
                 selectedIngredientsPhotosList.add(selectedPhoto);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -174,7 +177,6 @@ public class DetailActivity extends AppCompatActivity {
             Uri image = data.getData();
             try {
                 selectedPhoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
-                pic.setImageBitmap(selectedPhoto);
                 selectedCookingStepsPhotosList.add(selectedPhoto);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -184,7 +186,6 @@ public class DetailActivity extends AppCompatActivity {
             Uri image = data.getData();
             try {
                 selectedPhoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
-                pic.setImageBitmap(selectedPhoto);
                 selectedFinalPhotosList.add(selectedPhoto);
             } catch (IOException e) {
                 e.printStackTrace();
