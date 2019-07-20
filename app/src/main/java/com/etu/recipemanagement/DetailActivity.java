@@ -1,10 +1,12 @@
 package com.etu.recipemanagement;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,9 +25,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.etu.recipemanagement.Data.IP;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -34,6 +44,7 @@ public class DetailActivity extends AppCompatActivity {
     private LinearLayout cookingSteps;
     private ArrayList<String> ingredientsNames;
     private EditText ingredientName;
+    private EditText description;
     private IngredientAdapter ingredientAdapter;
     private ListView ingredientsListView;
     private List<Bitmap> selectedIngredientsPhotosList;
@@ -43,6 +54,7 @@ public class DetailActivity extends AppCompatActivity {
     private EditText cookingStepName;
     private CookingStepsAdapter cookingStepsAdapter;
     private ListView cookingStepsListView;
+    private int recipeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +72,15 @@ public class DetailActivity extends AppCompatActivity {
         cookingStepList = new ArrayList<>();
         cookingStepsAdapter = new CookingStepsAdapter(this, cookingStepList);
         cookingStepsListView = findViewById(R.id.cookingStepsListView);
+        description = findViewById(R.id.editTextDescription);
 
         init();
     }
 
     private void init() {
+
+        recipeId = getIntent().getIntExtra("id", 0);
+
         details = findViewById(R.id.details);
         ingredients = findViewById(R.id.ingredient);
 
@@ -139,7 +155,57 @@ public class DetailActivity extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.save);
         saveButton.setOnClickListener((v) -> {
+            Toast.makeText(getApplicationContext(),"asdjhajkshdkjashdkj",Toast.LENGTH_SHORT).show();
+            @SuppressLint("StaticFieldLeak")
+            AsyncTask<Void, Void, Void> task = new AsyncTask<Void,Void, Void>() {
 
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(),"serhat",Toast.LENGTH_SHORT).show());
+
+                    try {
+                        HttpURLConnection con;
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("http://10.5.38.161:8000");
+                        sb.append("/api_add_details_recipe/");
+                        sb.append(recipeId);
+                        sb.append("?description=");
+                        sb.append(description.getText().toString());
+                        String inner_ingredients = "";
+                        for (String ing : ingredientsNames){
+                            inner_ingredients +=ing;
+                        }
+                        sb.append("&ingredients=");
+                        sb.append(inner_ingredients);
+                        String inner_cooking_steps = "";
+                        for (String stp : cookingStepList){
+                            inner_cooking_steps += stp;
+                        }
+                        sb.append("&cooking_steps=");
+                        sb.append(inner_cooking_steps);
+                        Log.e("AHAHAHAHAHAHAH",sb.toString());
+
+                        URL url = new URL(sb.toString());
+
+                        con = (HttpURLConnection) url.openConnection();
+                        con.setRequestMethod("GET");
+
+
+                        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                        StringBuilder content = new StringBuilder();
+                        String line;
+                        while (null != (line = br.readLine())) {
+                            content.append(line);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            };
+            task.execute();
         });
     }
 

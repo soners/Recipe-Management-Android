@@ -18,6 +18,13 @@
             android:id="@+id/delete"
             />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Details"
+            android:id="@+id/add_details"
+            />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package com.etu.recipemanagement;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -38,7 +39,7 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
     private void loadRecipe(int id) {
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void,Void, Void>() {
+        @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, Void> task = new AsyncTask<Void,Void, Void>() {
 
             @Override
             protected Void doInBackground(Void... voids) {
@@ -88,6 +89,10 @@ public class RecipeActivity extends AppCompatActivity {
                             deleteRecipe(id);
                         });
 
+                        Button addDetailsButton = findViewById(R.id.add_details);
+                        addDetailsButton.setOnClickListener(v -> {
+                            addDetails(id);
+                        });
                     });
 
                 } catch (Exception e) {
@@ -143,6 +148,13 @@ public class RecipeActivity extends AppCompatActivity {
 
     }
 
+
+    private void addDetails(int id) {
+        Intent toDetails = new Intent(this, DetailActivity.class);
+        toDetails.putExtra("id",id);
+        startActivity(toDetails);
+
+    }
     private void shareRecipe(int id) {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
