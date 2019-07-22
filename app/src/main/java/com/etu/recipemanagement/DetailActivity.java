@@ -340,7 +340,7 @@ public class DetailActivity extends AppCompatActivity {
                         while (null != (line = br.readLine())) {
                             content.append(line);
                         }
-
+                        finish();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -348,7 +348,7 @@ public class DetailActivity extends AppCompatActivity {
                 }
             };
             task.execute();
-            finish();
+
         });
     }
 
