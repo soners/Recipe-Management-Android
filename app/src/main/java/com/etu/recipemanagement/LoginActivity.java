@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -93,8 +95,11 @@ public class LoginActivity extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
                                 });
-                                startActivity(intent);
-                                finish();
+
+                                FirebaseAuth.getInstance().signInAnonymously().addOnSuccessListener(runnable -> {
+                                    startActivity(intent);
+                                    finish();
+                                });
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
