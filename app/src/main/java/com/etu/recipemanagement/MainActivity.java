@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
             String details = new_recipe_details.getText().toString();
 
             if(name != null && details != null) {
-                AsyncTask<Void, Void, Void> art = new AsyncTask<Void, Void, Void>() {
+                @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, Void> art = new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... voids) {
                         try {
