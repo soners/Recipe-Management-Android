@@ -50,15 +50,18 @@ public class DetailActivity extends AppCompatActivity {
     private LinearLayout ingredients;
     private LinearLayout details;
     private LinearLayout cookingSteps;
+    private LinearLayout tags;
     private ArrayList<String> ingredientsNames;
     private EditText ingredientName;
     private EditText description;
+    private EditText tag;
     private IngredientAdapter ingredientAdapter;
     private ListView ingredientsListView;
     private List<Bitmap> selectedIngredientsPhotosList;
     private List<Bitmap> selectedCookingStepsPhotosList;
     private List<Bitmap> selectedFinalPhotosList;
     private ArrayList<String> cookingStepList;
+    private ArrayList<String> tagList;
     private EditText cookingStepName;
     private CookingStepsAdapter cookingStepsAdapter;
     private ListView cookingStepsListView;
@@ -72,6 +75,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         ingredientName = findViewById(R.id.ingredientNameInput);
         cookingSteps = findViewById(R.id.cooking_steps);
+        tags = findViewById(R.id.add_tags_layout);
         ingredientsNames = new ArrayList<>();
         ingredientAdapter = new IngredientAdapter(this, ingredientsNames);
         ingredientsListView = findViewById(R.id.ingredientsListView);
@@ -80,9 +84,11 @@ public class DetailActivity extends AppCompatActivity {
         selectedFinalPhotosList = new ArrayList<>();
         cookingStepName = findViewById(R.id.cookingStepsNameInput);
         cookingStepList = new ArrayList<>();
+        tagList = new ArrayList<>();
         cookingStepsAdapter = new CookingStepsAdapter(this, cookingStepList);
         cookingStepsListView = findViewById(R.id.cookingStepsListView);
         description = findViewById(R.id.editTextDescription);
+        tag = findViewById(R.id.tags);
 
 
         storage = FirebaseStorage.getInstance();
@@ -169,6 +175,22 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+
+        Button addtags = findViewById(R.id.addTags);
+        addtags.setOnClickListener((v) -> {
+            tags.setVisibility(View.VISIBLE);
+            details.setVisibility(View.GONE);
+        });
+
+
+        Button tagBack = findViewById(R.id.tag_back);
+        tagBack.setOnClickListener((v) -> {
+            tags.setVisibility(View.GONE);
+            details.setVisibility(View.VISIBLE);
+        });
+
+
+
         Button saveButton = findViewById(R.id.save);
         saveButton.setOnClickListener((v) -> {
             @SuppressLint("StaticFieldLeak")
@@ -202,6 +224,10 @@ public class DetailActivity extends AppCompatActivity {
                         }
                         sb.append("&cooking_steps=");
                         sb.append(inner_cooking_steps);
+
+                        //tags
+                        sb.append("&tags=");
+                        sb.append(tag.getText().toString());
 
                         // ingredients photos
                         String [] ingrediets_photos_urls = new String[selectedIngredientsPhotosList.size()];
