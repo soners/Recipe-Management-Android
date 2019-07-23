@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private LinearLayout last;
+    private LinearLayout profile_layout;
     private Button add_recipe;
 
     @Override
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity
 
         loadRecipes();
         addRecipe();
-
+        setProfile();
 
 
     }
@@ -138,8 +140,89 @@ public class MainActivity extends AppCompatActivity
                 new_recipe_details.setError("Please give details of the recipe");
             }
         });
+    }
+
+    private void setProfile() {
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void,Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                try {
+                    HttpURLConnection con;
+                    URL url = new URL(IP + "/api_get_threshold/" + Data.user.getId());
+                    con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("GET");
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                    StringBuilder content = new StringBuilder();
+                    String line;
+                    while (null != (line = br.readLine())) {
+                        content.append(line);
+                    }
 
 
+                    JSONObject json = new JSONObject(content.toString());
+                    int threshold = (int) json.get("threshold");
+
+                    runOnUiThread(() -> {
+                        TextView tv = findViewById(R.id.cur_threshold);
+                        tv.setText("Current Threshold: " + threshold);
+                    });
+
+                } catch (Exception e) {
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show());
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+        task.execute();
+
+        EditText et = findViewById(R.id.threshold);
+        Button save_threshold = findViewById(R.id.save);
+        save_threshold.setOnClickListener(v -> {
+            AsyncTask<Void, Void, Void> task2 = new AsyncTask<Void,Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+
+                    try {
+                        HttpURLConnection con;
+                        URL url = new URL(IP + "/api_save_threshold/" + Data.user.getId() + "?threshold=" + et.getText().toString());
+                        con = (HttpURLConnection) url.openConnection();
+                        con.setRequestMethod("GET");
+
+                        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                        StringBuilder content = new StringBuilder();
+                        String line;
+                        while (null != (line = br.readLine())) {
+                            content.append(line);
+                        }
+
+                        runOnUiThread(() -> {
+                            Toast.makeText(getApplicationContext(), "Saved!!", Toast.LENGTH_LONG).show();
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            };
+            task2.execute();
+        });
+
+        Button back = findViewById(R.id.back);
+        back.setOnClickListener(v -> {
+            LinearLayout profile = findViewById(R.id.profile);
+            profile.setVisibility(View.GONE);
+            LinearLayout ll = findViewById(R.id.recipe_layout);
+            ll.setVisibility(View.VISIBLE);
+            last = ll;
+        });
     }
 
     @Override
@@ -185,15 +268,14 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.my_recipes) {
             LinearLayout my_recipes = findViewById(R.id.recipe_layout);
-            if(last != null) last.setVisibility(View.GONE);
+            if (last != null) last.setVisibility(View.GONE);
             my_recipes.setVisibility(View.VISIBLE);
             last = my_recipes;
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
+        } else if (id == R.id.profile) {
+            LinearLayout profile = findViewById(R.id.profile);
+            if (last != null) last.setVisibility(View.GONE);
+            profile.setVisibility(View.VISIBLE);
+            last = profile;
         } else if (id == R.id.nav_send) {
 
         }
