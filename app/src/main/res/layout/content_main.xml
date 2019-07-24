@@ -26,6 +26,9 @@
                 android:layout_height="30dp"
                 android:src="@drawable/ic_menu_send" />
 
+
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,7 +39,22 @@
                 android:text="My Recipes"
                 android:textColor="#fff"
                 android:textSize="22sp" />
+
+
+
         </android.support.v7.widget.Toolbar>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:id="@+id/searchButton"/>
+
 
         <Button
             android:id="@+id/add_recipe"
@@ -95,6 +113,8 @@
 
 
     </LinearLayout>
+
+
 
     <LinearLayout
         android:visibility="gone"
@@ -167,3 +187,5 @@
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
+
+
