@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         loadRecipes();
         addRecipe();
         setProfile();
-
+        searchRecipes();
 
     }
 
@@ -345,5 +345,72 @@ public class MainActivity extends AppCompatActivity
             }
         };
         task.execute();
+    }
+
+    private void searchRecipes() {
+        EditText text = findViewById(R.id.search);
+        Button searchButton = findViewById(R.id.searchButton);
+        final ListView view = findViewById(R.id.recipeList);
+        searchButton.setOnClickListener(v -> {
+
+            AsyncTask<Void, Void, Void> task = new AsyncTask<Void,Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    String searchText = text.getText().toString();
+                    ArrayList<Recipe> recipes = new ArrayList<>();
+
+
+                    try {
+                        HttpURLConnection con;
+                        URL url = new URL(IP + "/api_search_recipe?search=" + searchText);
+                        con = (HttpURLConnection) url.openConnection();
+                        con.setRequestMethod("GET");
+
+                        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                        StringBuilder content = new StringBuilder();
+                        String line;
+                        while (null != (line = br.readLine())) {
+                            content.append(line);
+                        }
+
+
+                        JSONObject json = new JSONObject(content.toString());
+
+                        JSONArray array = json.getJSONArray("recipes");
+
+
+                        for(int i=0; i<array.length(); i++) {
+
+                            JSONObject jsonobject = (JSONObject) array.get(i);
+                            String name = jsonobject.getString("name");
+                            int id = (int) jsonobject.get("id");
+                            String detail = jsonobject.getString("details");
+
+                            //System.out.println("id:" + id +  " name: " + name + " detail: " + detail);
+
+                            Recipe rec = new Recipe();
+                            rec.setId(id);
+                            rec.setDesc(detail);
+                            rec.setName(name);
+
+                            recipes.add(rec);
+                        }
+
+
+
+                        RecipeAdapter adapter = new RecipeAdapter(getApplicationContext(), recipes);
+                        runOnUiThread(() -> view.setAdapter(adapter));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            };
+            task.execute();
+
+        });
     }
 }
